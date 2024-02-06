@@ -1,0 +1,8 @@
+Crash1
+Since 'malloc' call uses ret_val->num_bytes, which is read directly from the input file it most likely that without validating. Here in program, we allocate number of bytes with user input and giving malloc space. But it also accepts negative number or huge block of memory, and technically it cannot allocate negative space or fulfill such a large memory allocation request. So as a result, it will crash.
+
+Crash2
+We create an animated message record containing a custom program designed to trigger out-of-bounds memory access. This is achieved through the instruction \x01\x2f, with \x01 . regs is an array of 16 size so when args 1 and 2 are out of size it can cause the program to crash as program may try to access the data beyond the max array size.
+
+Hang
+We created the program begins with \x09\xfd ro positive jump to more than 256 which instructs opcode for a jump instruction and instructs counter to jump lading to an infinte loop.

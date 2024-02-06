@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <limits.h> // For INT_MAX
 // .,~==== interpreter for THX-1138 assembly ====~,.
 //
 // This is an emulated version of a microcontroller with
@@ -34,8 +34,13 @@ void animate(char *msg, unsigned char *program) {
         switch (*pc) {
             case 0x00:
                 break;
-            case 0x01:
-                regs[arg1] = *mptr;
+            case 0x01: 
+                if (arg1 < 16) {
+                    regs[arg1] = *mptr;
+                } else {
+                    fprintf(stderr, "Wrong Register Number: %d\n", arg1);
+                    return;
+                }
                 break;
             case 0x02:
                 *mptr = regs[arg1];
@@ -60,8 +65,16 @@ void animate(char *msg, unsigned char *program) {
             case 0x08:
                 goto done;
             case 0x09:
-                pc += (char)arg1;
-                break;
+            
+                if ((signed char)arg1 < 0 && pc - program < (unsigned char)arg1) {
+                    fprintf(stderr, "Jump beyond start(neg): %d\n", (signed char)arg1);
+                    return;
+                } else if ((signed char)arg1 > 0 && program + 256 - pc <= (unsigned char)arg1) {
+                    fprintf(stderr, "Jump beyond end(positive): %d\n", (signed char)arg1);
+                    return;
+                }
+                pc += (signed char)arg1; 
+                break; 
             case 0x10:
                 if (zf) pc += (char)arg1;
                 break;
@@ -184,6 +197,9 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 
 	struct this_gift_card *ret_val = malloc(sizeof(struct this_gift_card));
 
+    
+ 
+
     void *optr;
 	void *ptr;
 
@@ -194,6 +210,10 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 		/* JAC: Why aren't return types checked? */
 		fread(&ret_val->num_bytes, 4,1, input_fd);
 
+        // FIX FOR CRASH 1
+        if (ret_val->num_bytes < 0) { 
+            exit(0); 
+        }
 		// Make something the size of the rest and read it in
 		ptr = malloc(ret_val->num_bytes);
 		fread(ptr, ret_val->num_bytes, 1, input_fd);
