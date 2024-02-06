@@ -39,7 +39,7 @@ void animate(char *msg, unsigned char *program) {
                     regs[arg1] = *mptr;
                 } else {
                     fprintf(stderr, "Wrong Register Number: %d\n", arg1);
-                    return;
+                    exit(1);
                 }
                 break;
             case 0x02:
@@ -68,10 +68,10 @@ void animate(char *msg, unsigned char *program) {
             
                 if ((signed char)arg1 < 0 && pc - program < (unsigned char)arg1) {
                     fprintf(stderr, "Jump beyond start(neg): %d\n", (signed char)arg1);
-                    return;
+                    exit(1);
                 } else if ((signed char)arg1 > 0 && program + 256 - pc <= (unsigned char)arg1) {
                     fprintf(stderr, "Jump beyond end(positive): %d\n", (signed char)arg1);
-                    return;
+                    exit(1);
                 }
                 pc += (signed char)arg1; 
                 break; 
@@ -212,7 +212,7 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 
         // FIX FOR CRASH 1
         if (ret_val->num_bytes < 0) { 
-            exit(0); 
+           exit(1);
         }
 		// Make something the size of the rest and read it in
 		ptr = malloc(ret_val->num_bytes);
