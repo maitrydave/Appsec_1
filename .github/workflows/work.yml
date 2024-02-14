@@ -1,5 +1,5 @@
-name: p2
-run-name: ${{ github.actor }} is doing part 2
+name: work
+run-name: ${{ github.actor }} is doing part 3
 on:
   push:
     branches: [ "master" ] 

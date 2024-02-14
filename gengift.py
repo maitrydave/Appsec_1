@@ -111,18 +111,18 @@
 
 # cov2.gft  
 # from cov2.gft  increase coverage to 34.21 %
-# import struct
-# import sys
+import struct
+import sys
 
-# data = b"GiftCardz.com".ljust(32, b' ')
-# data += b"B" * 32
-# data += struct.pack("<I", 1)  # One record
-# data += struct.pack("<I", 12)   
-# data += struct.pack("<I", 2)  # Record type
-# data += b"x" * 31  
+data = b"GiftCardz.com".ljust(32, b' ')
+data += b"B" * 32
+data += struct.pack("<I", 1)  # One record
+data += struct.pack("<I", 12)   
+data += struct.pack("<I", 3)  # Record type
+data += b"x" * 31  
 
-# f = open(sys.argv[1], 'wb')
-# datalen = len(data) + 4
-# f.write(struct.pack("<I", datalen))
-# f.write(data)
-# f.close()
+f = open(sys.argv[1], 'wb')
+datalen = len(data) + 4
+f.write(struct.pack("<I", datalen))
+f.write(data)
+f.close()
