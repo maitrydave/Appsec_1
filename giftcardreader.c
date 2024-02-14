@@ -13,6 +13,23 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h> // For INT_MAX
+#define MAX_MESSAGE_LENGTH 32
+
+
+// fuzzer1 fix 
+void check_null_terminated_or_exit(const char* message) {
+    int found_null_terminator = 0;
+    for (int i = 0; i < MAX_MESSAGE_LENGTH; ++i) {
+        if (message[i] == '\0') {
+            found_null_terminator = 1;
+            break;
+        }
+    }
+    if (!found_null_terminator) {
+        // fprintf(stderr, "Error: Message is not null-terminated.\n");
+        exit(1);  
+    }
+}
 // .,~==== interpreter for THX-1138 assembly ====~,.
 //
 // This is an emulated version of a microcontroller with
@@ -31,6 +48,14 @@ void animate(char *msg, unsigned char *program) {
         op = *pc;
         arg1 = *(pc+1);
         arg2 = *(pc+2);
+
+
+        // fuzzer2 fix 
+        // Ensure arg1 and arg2 are within bounds before proceeding
+        if (arg1 >= 16 || arg2 >= 16) {
+            // fprintf(stderr, "Register index out of bounds: %d, %d\n", arg1, arg2);
+            exit(1);
+        }
         switch (*pc) {
             case 0x00:
                 break;
@@ -132,6 +157,9 @@ void print_gift_card_info(struct this_gift_card *thisone) {
 		}
 		else if (gcrd_ptr->type_of_record == 3) {
             gcp_ptr = gcrd_ptr->actual_record;
+
+            // CHECK IF NULL TEMRINATED OR EXIT
+            check_null_terminated_or_exit(gcp_ptr->message);
 			printf("      record_type: animated message\n");
             // BDG: Hmm... is message guaranteed to be null-terminated?
             printf("      message: %s\n", gcp_ptr->message);

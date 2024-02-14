@@ -1,0 +1,14 @@
+cov1.gft coverage increases to 31.5%
+we use different Record type  
+
+
+cov2.gft  increase coverage to 34.21 %
+record size changes done
+
+
+fuzzer1.gft
+Null terminator check: Check if null-terminated and exit the program if it's not, a function is added that scans through the message up to its maximum expected length. If it doesn't find a null terminator within this boundary, it exits the program.
+
+fuzzer2.gft
+potential overflow access:  regs array is defined with a fixed size of 16 elements (unsigned char regs[16];), but the code does not sufficiently guard against out-of-bounds access. This can occur if arg1 or arg2, which are used as indices into the regs array, exceed 15 (since array indexing is 0-based, valid indices are 0-15).
+To fix this issue, We ensured that arg1 and arg2 are checked to be within the bounds of the regs array size before they are used as indices.  

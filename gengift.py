@@ -91,3 +91,38 @@
 # f.write(struct.pack("<I", datalen))
 # f.write(data)
 # f.close()
+
+
+# cov1.gft coerage increade to 31.5%
+# import struct
+# import sys 
+# data = b"GiftCardz.com".ljust(32, b' ')
+# data += b"B" * 32
+# data += struct.pack("<I", 1)  # One record
+# data += struct.pack("<I", 8 + 32)  # Record size
+# data += struct.pack("<I", 0xFF)  # Record type
+# data += b"x" * 31 + b'\0'
+
+# f = open(sys.argv[1], 'wb')
+# datalen = len(data) + 4
+# f.write(struct.pack("<I", datalen))
+# f.write(data)
+# f.close()
+
+# cov2.gft  
+# from cov2.gft  increase coverage to 34.21 %
+# import struct
+# import sys
+
+# data = b"GiftCardz.com".ljust(32, b' ')
+# data += b"B" * 32
+# data += struct.pack("<I", 1)  # One record
+# data += struct.pack("<I", 12)   
+# data += struct.pack("<I", 2)  # Record type
+# data += b"x" * 31  
+
+# f = open(sys.argv[1], 'wb')
+# datalen = len(data) + 4
+# f.write(struct.pack("<I", datalen))
+# f.write(data)
+# f.close()
