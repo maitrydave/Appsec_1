@@ -278,14 +278,21 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 			ptr += 4;
             //printf("type of rec: %d\n", gcrd_ptr->type_of_record);
 
+            // print gcrd_ptr->type_of_record 
+            printf("gcrd_ptr: %d\n", gcrd_ptr->type_of_record);
+
 			// amount change
 			if (gcrd_ptr->type_of_record == 1) {
 				gcac_ptr->amount_added = *((int*) ptr);
 				ptr += 4;
+                printf("amount added: %d\n", gcac_ptr->amount_added);
+                // print gcac_ptr 
+                printf("gcac_ptr: %p\n", gcac_ptr);
+
 
 				// don't need a sig if negative
 				/* JAC: something seems off here */
-				if (gcac_ptr < 0) break;
+				if (gcac_ptr->amount_added < 0) break;
 
 				gcac_ptr->actual_signature = ptr;
 				ptr+=32;
