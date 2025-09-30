@@ -1,11 +1,17 @@
-name: Hello World Workflow
+﻿name: Hello
 
-# This workflow is triggered on pushes to the repository.
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  hello_world_job:
-    runs-on: self-hosted
+  say-hello:
+    runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Hello world
         run: echo "Hello world"
